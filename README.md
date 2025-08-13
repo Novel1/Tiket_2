@@ -36,7 +36,8 @@ cd bookstore
 ```commandline
 python -m venv venv
 source venv/Scripts/activate #Windows Linux -> venv/bin/activate
-venv\Scripts\activate     
+venv\Scripts\activate    
+для dump запустите файл restore.py  
 ```
 
 3. Установить зависимости:
