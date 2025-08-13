@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная - Библиотека книг{% endblock %}
+
+{% block content %}
+<h1 class="mb-4 text-center">Библиотека книг</h1>
+
+<form method="get" class="row g-3 mb-4 justify-content-center">
+    <div class="col-md-3">
+        <input
+            type="text"
+            name="category"
+            class="form-control"
+            placeholder="Категория"
+            value="{{ request.GET.category|default_if_none:'' }}">
+    </div>
+    <div class="col-md-3">
+        <input
+            type="text"
+            name="author"
+            class="form-control"
+            placeholder="Автор"
+            value="{{ request.GET.author|default_if_none:'' }}">
+    </div>
+    <div class="col-md-2">
+        <input
+            type="number"
+            name="year"
+            class="form-control"
+            placeholder="Год"
+            value="{{ request.GET.year|default_if_none:'' }}">
+    </div>
+    <div class="col-md-2 d-grid">
+        <button type="submit" class="btn btn-primary">Фильтровать</button>
+    </div>
+</form>
+
+<ul class="list-group">
+{% for book in books %}
+    <li class="list-group-item d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center flex-grow-1">
+            {% if book.avatar %}
+                <img src="{{ book.avatar.url }}" alt="{{ book.title }}" class="me-3" style="width: 80px; height: 120px; object-fit: contain; border-radius: 4px;">
+            {% else %}
+                <div class="me-3" style="width: 80px; height: 120px; background: #eee; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 0.8rem;">
+                    Нет обложки
+                </div>
+            {% endif %}
+            <div>
+                <strong>{{ book.title }}</strong> — {{ book.author_name }} ({{ book.year }})<br/>
+                <small class="text-muted">Категория: {{ book.category }}</small>
+            </div>
+        </div>
+        <div class="d-flex flex-column align-items-end">
+            {% if book.status == 'available' %}
+                <span class="badge bg-success rounded-pill mb-2">Доступна</span>
+            {% elif book.status == 'rented' %}
+                <span class="badge bg-danger rounded-pill mb-2">Занята</span>
+            {% elif book.status == 'sold' %}
+                <span class="badge bg-secondary rounded-pill mb-2">Продана</span>
+            {% endif %}
+            <span class="badge bg-info text-dark rounded-pill mb-2">{{ book.price }} тг.</span>
+            <a href="{% url 'rent_book' book.id %}" class="btn btn-primary btn-sm" {% if book.status != 'available' %}disabled{% endif %}>Арендовать</a>
+
+            </a>
+        </div>
+    </li>
+{% empty %}
+    <li class="list-group-item text-center text-muted">Книг не найдено.</li>
+{% endfor %}
+</ul>
+{% endblock %}
