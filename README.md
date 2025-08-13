@@ -28,7 +28,7 @@
 1. Клонировать репозиторий:
 
 ```bash
-git clone https://github.com/yourusername/bookstore.git
+git clone https://github.com/Novel1/Tiket_2.git
 cd bookstore
 ```
 2. Создать и активировать виртуальное окружение:
